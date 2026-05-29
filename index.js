@@ -30,7 +30,24 @@ client.once("clientReady", () => {
   console.log(`${client.user.tag} ficou online.`);
 });
 
-// Comandos
+
+// =====================
+// SISTEMA DE COMANDOS
+// =====================
+
+const fs = require("fs");
+
+client.commands = new Map();
+
+const commandFiles = fs
+  .readdirSync("./comandos")
+  .filter(file => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command = require(`./comandos/${file}`);
+  client.commands.set(command.name, command);
+}
+
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
@@ -39,34 +56,26 @@ client.on("messageCreate", async (message) => {
     return message.reply("Pong!");
   }
 
-  // Apagar tudo
-  if (message.content === "-apagar") {
+  const prefix = "-";
 
-    // Só dono
-    if (message.author.id !== message.guild.ownerId) {
-      return message.reply("Só o dono do servidor pode usar.");
-    }
+  if (!message.content.startsWith(prefix)) return;
 
-    await message.reply("🛑 Limpando servidor...");
+  const args = message.content
+    .slice(prefix.length)
+    .trim()
+    .split(/ +/);
 
-    // Apagar canais
-    for (const canal of message.guild.channels.cache.values()) {
-      try {
-        await canal.delete();
-      } catch (err) {}
-    }
+  const commandName = args.shift().toLowerCase();
 
-    // Apagar cargos
-    const cargos = message.guild.roles.cache.filter(role =>
-      role.editable &&
-      role.name !== "@everyone"
-    );
+  const command = client.commands.get(commandName);
 
-    for (const cargo of cargos.values()) {
-      try {
-        await cargo.delete();
-      } catch (err) {}
-    }
+  if (!command) return;
+
+  try {
+    await command.execute(message, args);
+  } catch (err) {
+    console.error(err);
+    message.reply("Erro ao executar comando.");
   }
 });
 
