@@ -101,12 +101,20 @@ module.exports = {
           .setColor("Green");
 
         const fecharBotao = new ActionRowBuilder().addComponents(
-          new ButtonBuilder()
-            .setCustomId("fechar_ticket")
-            .setLabel("Fechar Ticket")
-            .setEmoji("🔒")
-            .setStyle(ButtonStyle.Danger)
-        );
+
+  new ButtonBuilder()
+    .setCustomId("fechar_ticket")
+    .setLabel("Fechar Ticket")
+    .setEmoji("🔒")
+    .setStyle(ButtonStyle.Danger),
+
+  new ButtonBuilder()
+    .setCustomId("notificar_cliente")
+    .setLabel("Notificar Cliente")
+    .setEmoji("📩")
+    .setStyle(ButtonStyle.Secondary)
+
+);
 
         await canal.send({
           content: `${interaction.user}`,
@@ -123,6 +131,51 @@ module.exports = {
       // =========================
       // FECHAR TICKET
       // =========================
+      if (interaction.customId === "notificar_cliente") {
+
+  const id = interaction.channel.name.replace("ticket-", "");
+
+  const usuario = await interaction.guild.members
+    .fetch(id)
+    .catch(() => null);
+
+  if (!usuario) {
+    return interaction.reply({
+      content: "❌ Usuário não encontrado.",
+      ephemeral: true
+    });
+  }
+
+  const embed = new EmbedBuilder()
+    .setTitle("📩 Ticket Atualizado")
+    .setDescription(
+      `Olá ${usuario.user}, a equipe respondeu seu ticket.\n\nVolte ao servidor para verificar.`
+    )
+    .setColor("#5865F2")
+    .setThumbnail(interaction.guild.iconURL())
+    .setTimestamp();
+
+  try {
+
+    await usuario.send({
+      embeds: [embed]
+    });
+
+    interaction.reply({
+      content: "✅ Cliente notificado no privado.",
+      ephemeral: true
+    });
+
+  } catch {
+
+    interaction.reply({
+      content: "❌ Não consegui enviar mensagem no privado.",
+      ephemeral: true
+    });
+
+  }
+
+      }
 
       if (interaction.customId === "fechar_ticket") {
 
