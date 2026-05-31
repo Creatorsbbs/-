@@ -130,6 +130,17 @@ module.exports = {
       break;
   }
 
+        const ticketExistente = interaction.guild.channels.cache.find(
+  c => c.name.endsWith(interaction.user.id)
+);
+
+if (ticketExistente) {
+  return interaction.reply({
+    content: `❌ Você já possui um ticket aberto: ${ticketExistente}`,
+    ephemeral: true
+  });
+}
+
   const canal = await interaction.guild.channels.create({
     name: `${categoria}-${interaction.user.id}`,
     type: ChannelType.GuildText,
@@ -163,11 +174,10 @@ module.exports = {
     components: [fecharBotao]
   });
 
-  return interaction.update({
-    content: `✅ Ticket criado: ${canal}`,
-    embeds: [],
-    components: []
-  });
+  return interaction.reply({
+  content: `✅ Ticket criado: ${canal}`,
+  ephemeral: true
+});
       }
 
       // =========================
