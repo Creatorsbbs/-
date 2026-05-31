@@ -32,22 +32,6 @@ module.exports = {
       });
 
     const categoriaBotoes = new ActionRowBuilder().addComponents(
-
-      const fecharBotao = new ActionRowBuilder().addComponents(
-
-  new ButtonBuilder()
-    .setCustomId("fechar_ticket")
-    .setLabel("Fechar Ticket")
-    .setEmoji("🔒")
-    .setStyle(ButtonStyle.Danger),
-
-  new ButtonBuilder()
-    .setCustomId("notificar_cliente")
-    .setLabel("Notificar Cliente")
-    .setEmoji("📩")
-    .setStyle(ButtonStyle.Secondary)
-
-);
     
   new ButtonBuilder()
     .setCustomId("ticket_compras")
@@ -77,6 +61,22 @@ module.exports = {
     .setCustomId("ticket_outros")
     .setLabel("Outros")
     .setEmoji("📌")
+    .setStyle(ButtonStyle.Secondary)
+
+);
+
+    const fecharBotao = new ActionRowBuilder().addComponents(
+
+  new ButtonBuilder()
+    .setCustomId("fechar_ticket")
+    .setLabel("Fechar Ticket")
+    .setEmoji("🔒")
+    .setStyle(ButtonStyle.Danger),
+
+  new ButtonBuilder()
+    .setCustomId("notificar_cliente")
+    .setLabel("Notificar Cliente")
+    .setEmoji("📩")
     .setStyle(ButtonStyle.Secondary)
 
 );
@@ -175,7 +175,7 @@ module.exports = {
       // =========================
       if (interaction.customId === "notificar_cliente") {
 
-  const id = interaction.channel.name.replace("ticket-", "");
+  const id = interaction.channel.name.split("-").pop();
 
   const usuario = await interaction.guild.members
     .fetch(id)
