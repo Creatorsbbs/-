@@ -180,5 +180,9 @@ if (ticketExistente) {
   content: `✅ Ticket criado: ${canal}`,
   ephemeral: true
 });
-      }
+}
 
+    });
+
+  }
+};
