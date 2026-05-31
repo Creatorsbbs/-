@@ -46,7 +46,7 @@ module.exports = {
 『 24HRS COMMUNITY 』
 Conectando pessoas. Criando soluções.`
       )
-      .setColor("#2b2d31")
+      .setColor("#095488")
       .setFooter({
         text: message.guild.name
       });
