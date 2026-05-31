@@ -33,6 +33,22 @@ module.exports = {
 
     const categoriaBotoes = new ActionRowBuilder().addComponents(
 
+      const fecharBotao = new ActionRowBuilder().addComponents(
+
+  new ButtonBuilder()
+    .setCustomId("fechar_ticket")
+    .setLabel("Fechar Ticket")
+    .setEmoji("🔒")
+    .setStyle(ButtonStyle.Danger),
+
+  new ButtonBuilder()
+    .setCustomId("notificar_cliente")
+    .setLabel("Notificar Cliente")
+    .setEmoji("📩")
+    .setStyle(ButtonStyle.Secondary)
+
+);
+    
   new ButtonBuilder()
     .setCustomId("ticket_compras")
     .setLabel("Compras")
@@ -115,7 +131,7 @@ module.exports = {
   }
 
   const canal = await interaction.guild.channels.create({
-    name: `${categoria}-${interaction.user.username}`,
+    name: `${categoria}-${interaction.user.id}`,
     type: ChannelType.GuildText,
 
     permissionOverwrites: [
