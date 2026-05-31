@@ -67,7 +67,7 @@ module.exports = {
 
     await message.channel.send({
       embeds: [painel],
-      components: [botoes]
+      components: [categoriaBotoes]
     });
 
     // =========================
