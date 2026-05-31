@@ -57,7 +57,7 @@ Conectando pessoas. Criando soluções.`
     .setCustomId("ticket_compras")
     .setLabel("Compras")
     .setEmoji("🛒")
-    .setStyle(ButtonStyle.Success),
+    .setStyle(ButtonStyle.Primary),
 
   new ButtonBuilder()
     .setCustomId("ticket_parcerias")
@@ -69,19 +69,19 @@ Conectando pessoas. Criando soluções.`
     .setCustomId("ticket_duvidas")
     .setLabel("Dúvidas")
     .setEmoji("❓")
-    .setStyle(ButtonStyle.Secondary),
+    .setStyle(ButtonStyle.Primary),
 
   new ButtonBuilder()
     .setCustomId("ticket_denuncias")
     .setLabel("Denúncias")
     .setEmoji("🚨")
-    .setStyle(ButtonStyle.Danger),
+    .setStyle(ButtonStyle.Primary),
 
   new ButtonBuilder()
     .setCustomId("ticket_outros")
     .setLabel("Outros")
     .setEmoji("📌")
-    .setStyle(ButtonStyle.Secondary)
+    .setStyle(ButtonStyle.Primary)
 
 );
 
