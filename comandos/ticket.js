@@ -24,7 +24,27 @@ module.exports = {
     const painel = new EmbedBuilder()
       .setTitle("🎫 Central de Atendimento")
       .setDescription(
-        "Clique no botão abaixo para abrir um ticket."
+        "░▒▓█ 𝟐𝟒𝐇𝐑𝐒 █▓▒░
+
+「 protocolo de conexão iniciado 」
+「 acesso autorizado 」
+「 central sincronizada 」
+
+━━━━━━━━━━━━━━━━━━
+
+⚡ Escolha seu caminho.
+
+➜ Solicitar suporte
+➜ Contratar serviços
+➜ Tirar dúvidas
+➜ Entrar em contato com a equipe
+
+━━━━━━━━━━━━━━━━━━
+
+📡 Abra um ticket para prosseguir.
+
+『 24HRS COMMUNITY 』
+Conectando pessoas. Criando soluções."
       )
       .setColor("#2b2d31")
       .setFooter({
