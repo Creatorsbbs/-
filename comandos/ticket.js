@@ -94,6 +94,8 @@ module.exports = {
 
     collector.on("collect", async (interaction) => {
 
+      console.log("Botão clicado:", interaction.customId);
+      
       if (
   interaction.customId.startsWith("ticket_") &&
   interaction.customId !== "abrir_ticket"
