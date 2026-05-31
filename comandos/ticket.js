@@ -31,13 +31,39 @@ module.exports = {
         text: message.guild.name
       });
 
-    const botoes = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("abrir_ticket")
-        .setLabel("Abrir Ticket")
-        .setEmoji("🎫")
-        .setStyle(ButtonStyle.Primary)
-    );
+    const categoriaBotoes = new ActionRowBuilder().addComponents(
+
+  new ButtonBuilder()
+    .setCustomId("ticket_compras")
+    .setLabel("Compras")
+    .setEmoji("🛒")
+    .setStyle(ButtonStyle.Success),
+
+  new ButtonBuilder()
+    .setCustomId("ticket_parcerias")
+    .setLabel("Parcerias")
+    .setEmoji("🤝")
+    .setStyle(ButtonStyle.Primary),
+
+  new ButtonBuilder()
+    .setCustomId("ticket_duvidas")
+    .setLabel("Dúvidas")
+    .setEmoji("❓")
+    .setStyle(ButtonStyle.Secondary),
+
+  new ButtonBuilder()
+    .setCustomId("ticket_denuncias")
+    .setLabel("Denúncias")
+    .setEmoji("🚨")
+    .setStyle(ButtonStyle.Danger),
+
+  new ButtonBuilder()
+    .setCustomId("ticket_outros")
+    .setLabel("Outros")
+    .setEmoji("📌")
+    .setStyle(ButtonStyle.Secondary)
+
+);
 
     await message.channel.send({
       embeds: [painel],
@@ -51,6 +77,82 @@ module.exports = {
     const collector = message.channel.createMessageComponentCollector();
 
     collector.on("collect", async (interaction) => {
+
+      if (
+  interaction.customId.startsWith("ticket_") &&
+  interaction.customId !== "abrir_ticket"
+) {
+
+  let categoria = "Outros";
+  let descricao = "Descreva seu atendimento.";
+
+  switch (interaction.customId) {
+
+    case "ticket_compras":
+      categoria = "compras";
+      descricao = "Informe o produto ou serviço que deseja adquirir.";
+      break;
+
+    case "ticket_parcerias":
+      categoria = "parcerias";
+      descricao = "Explique sua proposta de parceria.";
+      break;
+
+    case "ticket_duvidas":
+      categoria = "duvidas";
+      descricao = "Envie sua dúvida detalhadamente.";
+      break;
+
+    case "ticket_denuncias":
+      categoria = "denuncias";
+      descricao = "Informe a denúncia com provas se possível.";
+      break;
+
+    case "ticket_outros":
+      categoria = "outros";
+      descricao = "Explique o motivo do seu ticket.";
+      break;
+  }
+
+  const canal = await interaction.guild.channels.create({
+    name: `${categoria}-${interaction.user.username}`,
+    type: ChannelType.GuildText,
+
+    permissionOverwrites: [
+      {
+        id: interaction.guild.id,
+        deny: [PermissionsBitField.Flags.ViewChannel]
+      },
+      {
+        id: interaction.user.id,
+        allow: [
+          PermissionsBitField.Flags.ViewChannel,
+          PermissionsBitField.Flags.SendMessages,
+          PermissionsBitField.Flags.ReadMessageHistory
+        ]
+      }
+    ]
+  });
+
+  const embedTicket = new EmbedBuilder()
+    .setTitle(`🎫 Ticket de ${categoria}`)
+    .setDescription(
+      `${interaction.user}\n\n${descricao}`
+    )
+    .setColor("Green");
+
+  await canal.send({
+    content: `${interaction.user}`,
+    embeds: [embedTicket],
+    components: [fecharBotao]
+  });
+
+  return interaction.update({
+    content: `✅ Ticket criado: ${canal}`,
+    embeds: [],
+    components: []
+  });
+      }
 
       // =========================
       // ABRIR TICKET
