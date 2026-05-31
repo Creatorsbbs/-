@@ -80,5 +80,67 @@ client.on("messageCreate", async (message) => {
   }
 });
 
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isButton()) return;
+
+  // FECHAR TICKET
+  if (interaction.customId === "fechar_ticket") {
+
+    await interaction.reply({
+      content: "🔒 Fechando ticket em 5 segundos..."
+    });
+
+    setTimeout(() => {
+      interaction.channel.delete().catch(() => {});
+    }, 5000);
+
+    return;
+  }
+
+  // NOTIFICAR CLIENTE
+  if (interaction.customId === "notificar_cliente") {
+
+    const id = interaction.channel.name.split("-").pop();
+
+    const usuario = await interaction.guild.members
+      .fetch(id)
+      .catch(() => null);
+
+    if (!usuario) {
+      return interaction.reply({
+        content: "❌ Usuário não encontrado.",
+        ephemeral: true
+      });
+    }
+
+    try {
+
+      await usuario.send({
+        embeds: [
+          {
+            title: "📩 Ticket Atualizado",
+            description:
+              `Olá ${usuario.user}, a equipe respondeu seu ticket.\n\nVolte ao servidor para verificar.`,
+            color: 0x5865F2
+          }
+        ]
+      });
+
+      await interaction.reply({
+        content: "✅ Cliente notificado.",
+        ephemeral: true
+      });
+
+    } catch {
+
+      await interaction.reply({
+        content: "❌ Não consegui enviar mensagem no privado.",
+        ephemeral: true
+      });
+
+    }
+  }
+});
+
 // Login
 client.login(process.env.TOKEN);
