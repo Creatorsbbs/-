@@ -110,10 +110,6 @@ Conectando pessoas. Criando soluções.`
     // INTERAÇÃO
     // =========================
 
-    const collector = message.channel.createMessageComponentCollector();
-
-    collector.on("collect", async (interaction) => {
-
       console.log("Botão clicado:", interaction.customId);
       
       if (
@@ -201,8 +197,6 @@ if (ticketExistente) {
   ephemeral: true
 });
 }
-
-    });
 
   }
 };
