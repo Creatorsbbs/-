@@ -1,20 +1,35 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ticket")
-    .setDescription("Sistema de tickets do servidor")
+    .setDescription("Sistema de tickets")
     .addSubcommand(sub =>
       sub
         .setName("setup")
-        .setDescription("Configurar o painel de tickets")
+        .setDescription("Criar painel de ticket")
     ),
 
   async execute(interaction) {
-    const ticket = require("../ticket"); // chama seu sistema principal
 
     if (interaction.options.getSubcommand() === "setup") {
-      return ticket.setup(interaction);
+
+      const embed = new EmbedBuilder()
+        .setTitle("🎫 Sistema de Ticket")
+        .setDescription("Clique para abrir um ticket")
+        .setColor("Blue");
+
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId("ticket_open")
+          .setLabel("Abrir Ticket")
+          .setStyle(ButtonStyle.Success)
+      );
+
+      return interaction.reply({
+        embeds: [embed],
+        components: [row]
+      });
     }
   }
 };
