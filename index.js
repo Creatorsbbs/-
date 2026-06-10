@@ -29,6 +29,16 @@ const client = new Client({
 // Bot online
 client.once("clientReady", () => {
   console.log(`${client.user.tag} ficou online.`);
+
+  client.user.setPresence({
+    activities: [
+      {
+        name: "Executive",
+        type: 3 // Assistindo
+      }
+    ],
+    status: "online"
+  });
 });
 
 require("./slashCommands")(client);
