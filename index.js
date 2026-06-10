@@ -31,6 +31,7 @@ client.once("clientReady", () => {
   console.log(`${client.user.tag} ficou online.`);
 });
 
+require("./slashCommands")(client);
 
 // =====================
 // SISTEMA DE COMANDOS
